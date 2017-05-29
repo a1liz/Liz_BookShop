@@ -64,4 +64,36 @@ class Books_model extends CI_Model {
 
 		return $this->db->query($sql);
 	}
+
+	public function editPurchase($cid,$ISBN,$shopid,$newnumber,$newdate) {
+		$sql = "UPDATE Purchase SET purchasenumber = ".$this->db->escape($newnumber).", purchasedate = ".$this->db->escape($newdate)." WHERE cid = ".$this->db->escape($cid)." AND ISBN = ".$this->db->escape($ISBN)." AND shopid = ".$this->db->escape($shopid);
+
+		$this->db->query($sql);
+
+		return $this->db->affected_rows();
+	}
+
+	public function delAuthor($IDcardnumber) {
+		$sql = "delimiter $$
+		start transaction;
+		delete from Storage where ISBN = any(select ISBN from Books where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		delete from StockIn where ISBN = any(select ISBN from Books where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		delete from Purchase where ISBN = any(select ISBN from Books where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		delete from Focus where ISBN = any(select ISBN from Books where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		delete from Books where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		delete from Author where IDcardnumber = ".$this->db->escape($IDcardnumber).";
+		commit;
+		end$$
+		delimiter ;";
+
+		$this->db->query($sql);
+
+		return $this->db->affected_rows();
+	}
+
+	public function findBook($ISBN) {
+		$sql = "select * from BookView where ISBN = ".$this->db->escape($ISBN);
+
+		return $this->db->query($sql);
+	}
 }
