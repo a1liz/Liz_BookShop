@@ -75,6 +75,7 @@ create table Customer
 create table Employees
 (
    eid                  varchar(16) not null,
+   password				varchar(16),
    shopid               int,
    ename                varchar(16),
    salary               int,
@@ -232,19 +233,19 @@ begin
 end$$
 
 /*--创建存储过程--*/
-create procedure purchaseProc(IN nPurchaseNum int, IN nISBN varchar(18), IN nshopid int )
+create procedure purchaseProc(IN nPurchaseNum int, IN nISBN varchar(18), IN nshopid int, IN ncid int)
 begin
 start transaction;
 	select @originNum := purchasenumber from Purchase
 	where ISBN = nISBN and shopid = nshopid;
 	update Purchase set Purchase.purchasenumber = nPurchaseNum
-	where Purchase.ISBN = nISBN and Purchase.shopid = nshopid;
+	where Purchase.ISBN = nISBN and Purchase.shopid = nshopid and Purchase.cid = ncid;
 	update Storage set Storage.storagenumber =
-	Storage.storagenumber + nPurchaseNum - @originNum
+	Storage.storagenumber - nPurchaseNum + @originNum
 	where Storage.ISBN = nISBN and Storage.shopid = nshopid;
 	IF exists (
 		select * from Storage 
-		where Storage.sotragenumber < 0 
+		where Storage.storagenumber < 0 
 		and Storage.ISBN = nISBN 
 		and Storage.shopid = nshopid) 
 	then

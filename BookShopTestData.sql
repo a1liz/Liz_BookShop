@@ -19,8 +19,8 @@ insert into Shops(shopid,address,opendate,manager)
 values(1,'滨江道28号','2016-9-18',null);
 
 /* Employees */
-insert into Employees(eid,shopid,ename,salary,entrytime)
-values('00001',1,'张三',5000,'2017-1-1');
+insert into Employees(eid,password,shopid,ename,salary,entrytime)
+values('00001',"qwer123",1,'张三',5000,'2017-1-1');
 
 /* Storage */
 insert into Storage(ISBN,shopid,storagenumber) values('10011231031',1,20);

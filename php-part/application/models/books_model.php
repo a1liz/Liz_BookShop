@@ -25,13 +25,11 @@ class Books_model extends CI_Model {
 
 	public function addEmployees($eid,$shopid,$ename,$salary,$entrytime) {
 		$sql = "INSERT INTO Employees(eid,shopid,ename,salary,entrytime) VALUES(".$this->db->escape($eid).",".$this->db->escape($shopid).",".$this->db->escape($ename).",".$this->db->escape($salary).",".$this->db->escape($entrytime).")";
-
 		return $this->db->query($sql);
 	}
 
 	public function addFocus($cid,$ISBN) {
 		$sql = "INSERT INTO Focus(cid,ISBN) VALUES(".$this->db->escape($cid).",".$this->db->escape($ISBN).")";
-
 		return $this->db->query($sql);
 	}
 
@@ -65,8 +63,8 @@ class Books_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 
-	public function editPurchase($cid,$ISBN,$shopid,$newnumber,$newdate) {
-		$sql = "UPDATE Purchase SET purchasenumber = ".$this->db->escape($newnumber).", purchasedate = ".$this->db->escape($newdate)." WHERE cid = ".$this->db->escape($cid)." AND ISBN = ".$this->db->escape($ISBN)." AND shopid = ".$this->db->escape($shopid);
+	public function editPurchase($cid,$ISBN,$shopid,$newnumber) {
+		$sql = "call purchaseProc(".$this->db->escape($newnumber).",".$this->db->escape($ISBN).",".$this->db->escape($shopid).",".$this->db->escape($cid).");";
 
 		$this->db->query($sql);
 
