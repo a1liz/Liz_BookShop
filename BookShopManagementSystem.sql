@@ -195,7 +195,13 @@ alter table StockIn add constraint CK_StockIn check(stockinnumber > 0);
 
 alter table Purchase add constraint CK_purchase check (purchasenumber > 0);
 
-/*--使用触发器--*/
+/*--创建视图--*/
+create view BookView as
+ select ISBN,pressname,authorname,bookname,price,publicationtime
+ from Author,Books where Books.IDcardnumber = Author.IDcardnumber;
+
+
+/*--创建触发器--*/
 delimiter $$
 create trigger purchaseTrigger after insert
 on Purchase for each row
@@ -225,7 +231,7 @@ begin
     end if;
 end$$
 
-/*--使用存储过程--*/
+/*--创建存储过程--*/
 create procedure purchaseProc(IN nPurchaseNum int, IN nISBN varchar(18), IN nshopid int )
 begin
 start transaction;
@@ -248,7 +254,6 @@ start transaction;
 commit;
 end$$
 delimiter ;
-
 
 
 

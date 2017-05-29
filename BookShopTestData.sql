@@ -36,3 +36,15 @@ values('00001','10011231031',1,30,'2017-5-2');
 /* Focus */
 insert into Focus(cid,ISBN) values('00001','10011231031');
 
+/*delimiter $$
+start transaction;
+	delete from Storage where ISBN = any(select ISBN from Books where IDcardnumber = "1511001");
+	delete from StockIn where ISBN = any(select ISBN from Books where IDcardnumber = "1511001");
+	delete from Purchase where ISBN = any(select ISBN from Books where IDcardnumber = "1511001");
+	delete from Focus where ISBN = any(select ISBN from Books where IDcardnumber = "1511001");	
+	delete from Books where IDcardnumber = "1511001";
+	delete from Author where IDcardnumber = "1511001";
+
+commit;
+end$$
+delimiter ;*/
